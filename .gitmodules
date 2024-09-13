@@ -1,0 +1,3 @@
+[submodule "react-project"]
+    path = react-project
+    url = https://github.com/gumooondal/EC2-Node-Ticket.git
