@@ -2,11 +2,15 @@ const express = require('express');
 const cors = require('cors'); // CORS 미들웨어 import
 const path = require('path');
 const app = express();
-const port = process.env.PORT || 5000; // 포트 설정 (기본값: 5000)
 const db = require('./db'); // DB 모듈 import
 require('dotenv').config();
+const port = process.env.PORT || 5000;
 
-app.use(cors()); // CORS 설정 추가
+app.use(cors({
+    origin: '*', // 모든 도메인에서 요청을 허용
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'], // 허용할 메서드
+    allowedHeaders: ['Content-Type', 'Authorization'], // 허용할 헤더
+  }));
 app.use(express.json()); // JSON 요청 본문 파싱
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,6 +33,19 @@ app.use('/api/ticket-add', ticketAddRoutes);
 app.use('/api/ticket-list', ticketListRoutes);
 app.use('/api/register', registerRoutes);
 app.use('/api/login', loginRoutes);
+app.use('/api/ticket-update', updateRoutes);
+app.use('/api/ticket-delete', deleteRoutes);
+
+app.post('/api/logout', (req, res) => {
+    const token = req.headers.authorization;
+  
+    // 서버 콘솔에 로그 남기기
+    console.log(`로그 : 로그아웃 성공 - ${new Date().toLocaleString()}`);
+  
+    // 로그아웃 처리 후 응답
+    res.status(200).json({ message: '로그아웃 성공' });
+  });
+  
 
 app.post('/log', (req, res) => {
     const { action } = req.body;
@@ -36,10 +53,8 @@ app.post('/log', (req, res) => {
     res.status(200).send('로그 기록 완료');
 });
 
-app.use('/api/ticket-update', updateRoutes);
-app.use('/api/ticket-delete', deleteRoutes);
 
 // 서버 시작
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
