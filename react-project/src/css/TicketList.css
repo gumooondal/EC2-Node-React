@@ -1,0 +1,109 @@
+.ticket-list-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto; /* 스크롤 추가 */
+  margin-top: 120px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-list {
+  max-height: 500px; /* 적절한 최대 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤 추가 */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* 카드 간격 */
+}
+
+
+.ticket-list-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.reset-button-container {
+  display: flex; /* 버튼들을 수평으로 배치 */
+  justify-content: center; /* 버튼을 가로로 가운데 정렬 */
+  margin-bottom: 20px; /* 버튼과 카드 사이의 간격 */
+}
+
+.reset-button {
+  padding: 10px 20px;
+  background-color: #dc3545; /* 빨간색 버튼 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background-color: #c82333; /* 호버 시 색상 */
+}
+
+.ticket-card {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 배치 */
+  align-items: center; /* 가로 방향 가운데 정렬 */
+}
+
+.ticket-detail {
+  margin-bottom: 10px; /* 각 항목 간격 */
+}
+
+.ticket-detail:last-of-type {
+  margin-bottom: 0; /* 마지막 항목 간격 제거 */
+}
+
+.ticket-detail strong {
+  color: #333;
+}
+
+.button-container {
+  display: flex; /* 버튼들을 수평으로 배치 */
+  gap: 10px; /* 버튼 사이의 간격 */
+  margin-top: 10px; /* 카드와 버튼 사이의 간격 */
+  justify-content: center; /* 버튼들을 가로로 가운데 정렬 */
+}
+
+.decrement-button,
+.delete-button {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.decrement-button {
+  background-color: rgb(0, 213, 255); /* 밝은 파란색 */
+  color: white;
+}
+
+.decrement-button:hover {
+  background-color: #0097a7; /* 호버 시 어두운 파란색 */
+}
+
+.delete-button {
+  background-color: red; /* 빨간색 */
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: darkred; /* 호버 시 어두운 빨간색 */
+}
+
+.data-size-info {
+  margin-top: 20px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+
