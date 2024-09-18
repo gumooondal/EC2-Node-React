@@ -23,6 +23,7 @@ const authenticateToken = (req, res, next) => {
 router.get('/', authenticateToken, (req, res) => {
   const startTime = Date.now();
   const userPhoneNumber = req.user.phoneNumber; // JWT에서 가져온 사용자 정보
+  console.log(userPhoneNumber);
 
   // 데이터베이스 쿼리
   const query = 'SELECT * FROM ticket WHERE user_phone_number = ?'; // 사용자의 티켓만 가져오는 쿼리

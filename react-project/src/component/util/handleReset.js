@@ -7,7 +7,7 @@ export const handleReset = async (isLoggedIn, userPhoneNumber, setTickets) => {
     if (isLoggedIn) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete('http://localhost:3010/ticket-reset', {
+        await axios.delete('/api/ticket-reset', {
           headers: { Authorization: `Bearer ${token}` },
           data: { user_phone_number: userPhoneNumber } // 요청 본문에 user_phone_number 추가
         });

@@ -27,7 +27,7 @@ const registerRoutes = require(path.join(__dirname, 'react-project/src/route/reg
 const loginRoutes = require(path.join(__dirname, 'react-project/src/route/login'));
 const updateRoutes = require(path.join(__dirname, 'react-project/src/route/ticketUpdate'));
 const deleteRoutes = require(path.join(__dirname, 'react-project/src/route/ticketDelete'));
-
+const resetRoutes = require(path.join(__dirname, 'react-project/src/route/ticketReset'));
 
 app.use('/api/ticket-add', ticketAddRoutes);
 app.use('/api/ticket-list', ticketListRoutes);
@@ -35,6 +35,7 @@ app.use('/api/register', registerRoutes);
 app.use('/api/login', loginRoutes);
 app.use('/api/ticket-update', updateRoutes);
 app.use('/api/ticket-delete', deleteRoutes);
+app.use('/api/ticket-reset', resetRoutes);
 
 app.post('/api/logout', (req, res) => {
     const token = req.headers.authorization;

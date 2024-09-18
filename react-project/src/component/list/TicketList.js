@@ -38,13 +38,19 @@ function TicketList() {
   };
 
   const resetClick = () => {
-    if (userPhoneNumber) {
-      handleReset(isLoggedIn, userPhoneNumber, setTickets);
+    if (isLoggedIn) {
+      // 로그인 상태에서 userPhoneNumber가 필요한 경우
+      if (userPhoneNumber) {
+        handleReset(isLoggedIn, userPhoneNumber, setTickets); // 올바른 인자 전달
+      } else {
+        console.warn('User phone number is not set.');
+      }
     } else {
-      console.warn('User phone number is not set.');
+      // 비로그인 상태에서 호출
+      handleReset(isLoggedIn, null, setTickets); // 로그인 상태가 아니므로 userPhoneNumber는 null
     }
   };
-
+  
   const saveTickets = (updatedTickets) => {
     if (!isLoggedIn) {
       localStorage.setItem('tickets', JSON.stringify(updatedTickets));
@@ -76,6 +82,9 @@ function TicketList() {
       <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <h2>회수권 리스트</h2>
       {isLoggedIn && tickets.length > 0 && (
+        <ResetButton onClick={resetClick} />
+      )}
+        {!isLoggedIn && tickets.length > 0 && (
         <ResetButton onClick={resetClick} />
       )}
       <div className="ticket-list">

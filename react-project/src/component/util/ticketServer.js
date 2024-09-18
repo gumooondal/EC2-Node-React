@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchTicketsFromServer = async (token, setTickets,  setUserPhoneNumber) => {
   try {
-    const response = await axios.get('http://localhost:5000/api/ticket-list', {
+    const response = await axios.get('/api/ticket-list', {
       headers: { Authorization: `Bearer ${token}` }
     });
 
