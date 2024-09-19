@@ -23,7 +23,6 @@ const authenticateToken = (req, res, next) => {
 router.get('/', authenticateToken, (req, res) => {
   const startTime = Date.now();
   const userPhoneNumber = req.user.phoneNumber; // JWT에서 가져온 사용자 정보
-  console.log(userPhoneNumber);
 
   // 데이터베이스 쿼리
   const query = 'SELECT * FROM ticket WHERE user_phone_number = ?'; // 사용자의 티켓만 가져오는 쿼리
@@ -34,7 +33,7 @@ router.get('/', authenticateToken, (req, res) => {
       return res.status(500).json({ success: false, message: '서버 오류' });
     }
     const endTime = Date.now();
-    console.log(`Fetched ${results.length} tickets for user ${userPhoneNumber} in ${endTime - startTime}ms`);
+    console.log(`클라이언트 로그 : 리스트 - user ${userPhoneNumber} in ${new Date().toLocaleString()}`);
 
     // 성공 응답 반환
     res.json({ 

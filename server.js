@@ -41,7 +41,7 @@ app.post('/api/logout', (req, res) => {
     const token = req.headers.authorization;
   
     // 서버 콘솔에 로그 남기기
-    console.log(`로그 : 로그아웃 성공 - ${new Date().toLocaleString()}`);
+    console.log(`클라이언트 로그 : 로그아웃 성공 - ${new Date().toLocaleString()}`);
   
     // 로그아웃 처리 후 응답
     res.status(200).json({ message: '로그아웃 성공' });

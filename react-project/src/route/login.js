@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
 
       if (passwordMatch) {
         const token = jwt.sign({ phoneNumber: user.phone_number }, JWT_SECRET, { expiresIn: '1h' });
-        console.log(`로그 : 로그인 성공 - ${new Date().toLocaleString(), token}`);
+        console.log(`클라이언트 로그 : 로그인 성공 - ${new Date().toLocaleString()}`);
         return res.json({ success: true, message: '로그인 성공', token });
       } else {
         return res.status(401).json({ success: false, message: '로그인 실패: 잘못된 비밀번호' });

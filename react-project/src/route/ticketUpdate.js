@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
   if (token == null) return res.status(401).json({ success: false, message: '토큰이 없습니다.' });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ success: false, message: '유효하지 않은 토' });
+    if (err) return res.status(403).json({ success: false, message: '유효하지 않은 토큰' });
     req.user = user;
     next();
   });

@@ -42,7 +42,6 @@ function TicketAddForm() {
         };
 
         if (isLoggedIn) {
-            // 로그인 상태에서 서버에 데이터 저장 (ID는 서버에서 생성)
             try {
                 const token = localStorage.getItem('token');
                 await axios.post('/api/ticket-add', newTicket, {
@@ -51,10 +50,38 @@ function TicketAddForm() {
                 alert('회수권이 등록되었습니다!');
                 navigate('/ticket-list');
             } catch (error) {
+                if (error.response) {
+                    // 서버에서 응답한 에러 코드 및 메시지 처리
+                    if (error.response.status === 400) {
+                        const message = error.response.data.message;
+
+                        // 입력값 오류
+                        if (message === '모든 필드를 채워주세요.') {
+                            alert('모든 필드를 채워주세요.');
+                        } else if (message === '클라이밍장 이름이 유효하지 않습니다.') {
+                            alert('클라이밍장 이름은 유효하지 않습니다. 특수 문자를 포함하거나 15자를 넘길 수 없습니다.');
+                        } else if (message === '티켓 수량이 유효하지 않습니다.') {
+                            alert('티켓 수량이 올바르지 않습니다. 숫자 형식으로 입력해주세요.');
+                        } else if (message === '티켓은 최대 10개까지만 등록할 수 있습니다.') {
+                            alert('회수권은 최대 10개까지만 등록할 수 있습니다.');
+                        } else if (message === '등록일이 올바른 형식이 아닙니다.') {
+                            alert('등록일이 올바른 날짜 형식이 아닙니다. 날짜를 다시 확인해주세요.');
+                        } else {
+                            alert('잘못된 요청입니다.');
+                        }
+                    } else if (error.response.status === 500) {
+                        alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                    } else {
+                        alert('알 수 없는 오류가 발생했습니다.');
+                    }
+                } else {
+                    // 네트워크 에러 등 서버 응답이 없는 경우
+                    alert('회수권 등록에 실패했습니다. 네트워크 상태를 확인해주세요.');
+                }
                 console.error('회수권 등록 실패:', error);
-                alert('회수권 등록에 실패했습니다. 다시 시도해주세요.');
             }
-        } else {
+        }
+        else {
             // 비로그인 상태에서 로컬 스토리지에 고유 ID를 부여하여 저장
             const existingTickets = JSON.parse(localStorage.getItem('tickets')) || [];
             const ticketWithId = { ...newTicket, id: Date.now() }; // 로컬에서 고유 ID 부여

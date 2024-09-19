@@ -7,7 +7,6 @@ export const login = async (phoneNumber, password, navigate) => {
       password,
     });
 
-    console.log('로그인 응답:', response.data);
     localStorage.setItem('token', response.data.token);
     navigate('/ticket-list'); // 로그인 성공 시 페이지 이동
   } catch (error) {

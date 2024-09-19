@@ -29,7 +29,6 @@ const isValidDateFormat = (dateString) => {
   return date.toISOString().slice(0, 10) === dateString;
 };
 
-// 회수권 등록 라우트
 router.post('/', authenticateToken, (req, res) => {
   const { gymName, ticketCount, registrationDate, expire } = req.body;
   const userPhoneNumber = req.user.phoneNumber;
@@ -40,6 +39,11 @@ router.post('/', authenticateToken, (req, res) => {
   // 입력 유효성 검사
   if (!gymName || !ticketCount || !registrationDate || !expire) {
     return res.status(400).json({ success: false, message: '모든 필드를 채워주세요.' });
+  }
+
+  // gymName의 길이 및 유효성 검사
+  if (gymName.length > 15 || /['";]/.test(gymName)) {
+    return res.status(400).json({ success: false, message: '클라이밍장 이름이 유효하지 않습니다.' });
   }
 
   // 숫자로 변환
@@ -53,21 +57,39 @@ router.post('/', authenticateToken, (req, res) => {
     return res.status(400).json({ success: false, message: '등록일이 올바른 형식이 아닙니다.' });
   }
 
-  // 데이터베이스 쿼리
-  const insertQuery = `
-    INSERT INTO ticket (climbing_gym_name, ticket_count, registration_date, expire, user_phone_number)
-    VALUES (?, ?, ?, ?, ?)
+  // 먼저 사용자가 가진 티켓의 개수를 조회
+  const checkTicketCountQuery = `
+    SELECT COUNT(*) AS totalTicketCount FROM ticket WHERE user_phone_number = ?
   `;
 
-  // 쿼리 실행
-  db.query(insertQuery, [gymName, count, registrationDate, expire, userPhoneNumber], (err, result) => {
+  db.query(checkTicketCountQuery, [userPhoneNumber], (err, result) => {
     if (err) {
-      console.error('Insert error:', err); // 자세한 에러 로그
-      return res.status(500).json({ success: false, message: '회수권 등록 실패', error: err.message });
+      console.error('Query error:', err);
+      return res.status(500).json({ success: false, message: '서버 오류로 인해 티켓 개수 확인에 실패했습니다.' });
     }
 
-    console.log('Insert result:', result);  
-    return res.json({ success: true, message: '회수권이 등록되었습니다!' });
+    const totalTicketCount = result[0].totalTicketCount;
+
+    // 티켓이 10개 이상이면 등록 금지
+    if (totalTicketCount >= 10) {
+      return res.status(400).json({ success: false, message: '티켓은 최대 10개까지만 등록할 수 있습니다.' });
+    }
+
+    // 10개 미만일 때 티켓 등록 진행
+    const insertQuery = `
+      INSERT INTO ticket (climbing_gym_name, ticket_count, registration_date, expire, user_phone_number)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(insertQuery, [gymName, count, registrationDate, expire, userPhoneNumber], (err, result) => {
+      if (err) {
+        console.error('Insert error:', err);
+        return res.status(500).json({ success: false, message: '회수권 등록 실패', error: err.message });
+      }
+
+      console.log('Insert result:', result);
+      return res.json({ success: true, message: '회수권이 등록되었습니다!' });
+    });
   });
 });
 

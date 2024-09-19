@@ -14,16 +14,39 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault(); // 폼 제출 시 기본 동작 방지
 
+    // 핸드폰 번호 유효성 검사: 숫자만 입력되었는지, 1자리에서 11자리까지 허용
+    const phoneRegex = /^[0-9]{1,11}$/; // 1자리에서 11자리 숫자 허용
+    if (!phoneNumber || !phoneRegex.test(phoneNumber)) {
+      return alert('유효한 핸드폰 번호를 입력해주세요.');
+    }
+
+    // 비밀번호가 입력되었는지 확인
+    if (!password) {
+      return alert('비밀번호를 입력해주세요.');
+    }
+
+    // 로그인 또는 회원가입 처리
     if (phoneNumber && password) {
       if (isLogin) {
-        await login(phoneNumber, password, navigate); // 로그인 처리 함수 호출
+        try {
+          await login(phoneNumber, password, navigate); // 로그인 처리 함수 호출
+        } catch (error) {
+          console.error('로그인 실패:', error);
+          alert('로그인에 실패했습니다. 다시 시도해주세요.');
+        }
       } else {
-        await register(phoneNumber, password, setIsLogin); // 회원가입 처리 함수 호출
+        try {
+          await register(phoneNumber, password, setIsLogin); // 회원가입 처리 함수 호출
+        } catch (error) {
+          console.error('회원가입 실패:', error);
+          alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+        }
       }
     } else {
       alert('모든 필드를 채워주세요.');
     }
   };
+
 
   return (
     <div className="login-page-container">
