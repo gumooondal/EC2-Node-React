@@ -5,6 +5,7 @@ import './App.css';
 import LoginPage from './component/login/LoginPage';
 import TicketAddForm from './component/addForm/MainForm';
 import TicketList from './component/list/TicketList';
+import reportWebVitals from './reportWebVitals';
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"></link>
 
 
@@ -20,5 +21,16 @@ function App() {
   </Router>
   );
 }
+
+// 성능 측정 및 Google Analytics 이벤트 기록
+reportWebVitals((metric) => {
+  if (window.gtag) {
+    window.gtag('event', 'page_view', {
+      page_title: metric.name,
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+    });
+  }
+});
 
 export default App;

@@ -47,6 +47,16 @@ function TicketAddForm() {
                 await axios.post('/api/ticket-add', newTicket, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
+
+                // Google Analytics 이벤트 기록
+                if (window.gtag) {
+                    window.gtag('event', 'ticket_add', {
+                        event_category: 'Ticket',
+                        event_label: 'Ticket Added',
+                        value: 1
+                    });
+                }
+
                 alert('회수권이 등록되었습니다!');
                 navigate('/ticket-list');
             } catch (error) {
@@ -59,7 +69,7 @@ function TicketAddForm() {
                         if (message === '모든 필드를 채워주세요.') {
                             alert('모든 필드를 채워주세요.');
                         } else if (message === '클라이밍장 이름이 유효하지 않습니다.') {
-                            alert('클라이밍장 이름은 유효하지 않습니다. 특수 문자를 포함하거나 15자를 넘길 수 없습니다.');
+                            alert('클라이밍장 이름이 유효하지 않습니다. 특수 문자를 포함하거나 15자를 넘길 수 없습니다.');
                         } else if (message === '티켓 수량이 유효하지 않습니다.') {
                             alert('티켓 수량이 올바르지 않습니다. 숫자 형식으로 입력해주세요.');
                         } else if (message === '티켓은 최대 10개까지만 등록할 수 있습니다.') {
@@ -80,17 +90,27 @@ function TicketAddForm() {
                 }
                 console.error('회수권 등록 실패:', error);
             }
-        }
-        else {
+        } else {
             // 비로그인 상태에서 로컬 스토리지에 고유 ID를 부여하여 저장
             const existingTickets = JSON.parse(localStorage.getItem('tickets')) || [];
             const ticketWithId = { ...newTicket, id: Date.now() }; // 로컬에서 고유 ID 부여
             existingTickets.push(ticketWithId);
             localStorage.setItem('tickets', JSON.stringify(existingTickets));
+
+            // Google Analytics 이벤트 기록
+            if (window.gtag) {
+                window.gtag('event', 'ticket_add', {
+                    event_category: 'Ticket',
+                    event_label: 'Ticket Added (Local Storage)',
+                    value: 1
+                });
+            }
+
             alert('회수권이 등록되었습니다!');
             navigate('/ticket-list');
         }
     };
+
 
     const handleCustomCountChange = (e) => {
         const value = e.target.value;
