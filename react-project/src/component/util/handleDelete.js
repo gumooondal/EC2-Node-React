@@ -2,7 +2,6 @@ import axios from 'axios';
 
 // handleDelete 함수 정의
 export const handleDelete = async (ticketId, isLoggedIn, tickets, setTickets, saveTickets) => {
-  console.log('삭제하려는 티켓 ID:', ticketId);
   const isConfirmed = window.confirm('정말 삭제하시겠습니까?');
 
   if (isConfirmed) {
