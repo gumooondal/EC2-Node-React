@@ -5,6 +5,7 @@ import InputField from './InputField';
 import OptionButton from './OptionButton';
 import Header from './Header';
 import axios from 'axios';
+import { gtag } from '../../analytics'; 
 
 function TicketAddForm() {
     const [gymName, setGymName] = useState('');
