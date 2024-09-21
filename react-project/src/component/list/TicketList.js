@@ -50,7 +50,7 @@ function TicketList() {
       handleReset(isLoggedIn, null, setTickets); // 로그인 상태가 아니므로 userPhoneNumber는 null
     }
   };
-  
+
   const saveTickets = (updatedTickets) => {
     if (!isLoggedIn) {
       localStorage.setItem('tickets', JSON.stringify(updatedTickets));
@@ -59,23 +59,26 @@ function TicketList() {
   };
 
   const handleLogout = async () => {
+    // 로그아웃 확인
+    const confirmLogout = window.confirm("정말로 로그아웃 하시겠습니까?");
+    if (!confirmLogout) return; // 사용자가 취소하면 함수 종료
     try {
       // 서버로 로그아웃 요청 보내기
       await axios.post('/api/logout', {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
-      
+
       // 로컬 스토리지에서 토큰 제거
       localStorage.removeItem('token');
       setIsLoggedIn(false);
-      
+
       // 페이지 이동
       navigate('/');
     } catch (error) {
       console.error('로그아웃 실패:', error);
     }
   };
-  
+
 
   return (
     <div className="ticket-list-container">
@@ -84,13 +87,13 @@ function TicketList() {
       {isLoggedIn && tickets.length > 0 && (
         <ResetButton onClick={resetClick} />
       )}
-        {!isLoggedIn && tickets.length > 0 && (
+      {!isLoggedIn && tickets.length > 0 && (
         <ResetButton onClick={resetClick} />
       )}
       <div className="ticket-list">
         {tickets.length > 0 ? (
           tickets.map(ticket => (
-            <TicketCard 
+            <TicketCard
               key={ticket.id}
               ticket={ticket}
               onDecrement={() => decrementClick(ticket.id)}

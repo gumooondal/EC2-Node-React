@@ -90,15 +90,13 @@
 .header {
   display: flex;
   justify-content: flex-end; /* 모바일 환경에서는 유지 */
+  align-items: center; /* 버튼 세로 정렬 */
   position: fixed;
   right: 0;
   top: 0;
   padding: 10px 20px;
 
   @media (min-width: 681px) { /* 웹 환경 */
-    display: flex;
-    align-items: center;
-    position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%); /* 화면 중앙으로 이동 */
@@ -107,6 +105,14 @@
     width: auto; /* 기본적으로 auto 설정 */
   }
 }
+
+.top-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; /* 버튼 세로 정렬 */
+  margin-bottom: 10px; /* 추가 버튼과의 간격 조정 */
+}
+
 /* 로그아웃 버튼 스타일 */
 .logout-button {
   background-color: #ff4d4d; /* 빨간색 배경 */
@@ -124,15 +130,24 @@
   background-color: #ff1a1a; /* 더 어두운 빨간색 */
 }
   
-.nonlogin-button {
+.nonlogin-button,
+.nonadditional-button {
   background-color: #f200ff;  
   color: white; /* 흰색 텍스트 */
-  border: none;
+  border: 2px solid #ffc107; /* 흰색 테두리 추가 */
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
+
+  /* 최소 높이와 너비 설정 */
+  min-height: 40px; /* 원하는 최소 높이 */
+  min-width: 100px; /* 원하는 최소 너비 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 텍스트 중앙 정렬 */
+  justify-content: center; /* 텍스트 중앙 정렬 */
 }
 
 /* 모바일 화면용 스타일 */
@@ -149,4 +164,14 @@
   .login-signup-container input {
     padding: 8px; /* 입력 필드 패딩 조정 */
   }
+}
+
+.nonadditional-buttons {
+  display: none; /* 기본적으로 숨김 */
+  flex-direction: column; /* 세로로 나열 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.nonadditional-buttons.show {
+  display: flex; /* 토글되면 나타남 */
 }
